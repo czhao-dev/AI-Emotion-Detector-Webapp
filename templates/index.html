@@ -1,32 +1,50 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="./static/mywebscript.js"></script>
-    <style>
-        .center-heading {
-            text-align: center;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Emotion Detector</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script defer src="{{ url_for('static', filename='mywebscript.js') }}"></script>
 </head>
 <body>
-    <div class="card">
-        <div class="card-body">
-            <h1 class="center-heading">NLP - Emotion Detection</h1> 
-            <div style="padding: 25px 25px 25px 25px;">
-            <h2 class="mb-3">
-                <label class="form-label">Please enter the text to be analyzed</label>
-                <input type="textarea" class="form-control" id="textToAnalyze">
-            </h2>
+    <main class="app-shell">
+        <section class="workspace" aria-labelledby="app-title">
+            <header class="app-header">
+                <div>
+                    <p class="eyebrow">Natural Language Processing</p>
+                    <h1 id="app-title">AI Emotion Detector</h1>
+                </div>
+                <span class="status-pill" id="statusPill">Ready</span>
+            </header>
 
-            <div style="padding: 25px 25px 25px 25px;">
-                <button onclick="RunSentimentAnalysis()" class="btn btn-secondary">Run Sentiment Analysis</button>
+            <div class="analysis-grid">
+                <form class="input-panel" id="analysisForm">
+                    <label for="textToAnalyze">Text to analyze</label>
+                    <textarea
+                        id="textToAnalyze"
+                        name="textToAnalyze"
+                        rows="9"
+                        maxlength="1200"
+                        placeholder="I am thrilled about the launch, but nervous about the deadline."
+                    ></textarea>
+                    <div class="form-footer">
+                        <span id="characterCount">0 / 1200</span>
+                        <button type="submit" id="analyzeButton">Analyze Emotion</button>
+                    </div>
+                </form>
+
+                <section class="result-panel" aria-live="polite">
+                    <div class="dominant-card">
+                        <span>Dominant emotion</span>
+                        <strong id="dominantEmotion">Waiting</strong>
+                    </div>
+                    <div class="score-list" id="scoreList"></div>
+                    <p class="message" id="systemResponse">Enter text and run the analysis.</p>
+                </section>
             </div>
-            <div style="padding: 25px 25px 25px 25px;"></div>
-            <h2 class="mb-3">
-                <label class="form-label">Result of Emotion Detection</label>
-            </h2>
-
-            <div id="system_response" style="padding: 25px 25px 25px 25px;"></div>
-        </div>
-    </div>
+        </section>
+    </main>
 </body>
+</html>
