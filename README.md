@@ -1,168 +1,130 @@
+# AI Emotion Detector
 
-# AI-Based Emotion Detection Web Application
-
-## Overview
-
-This project is a final assignment for an AI engineering course. The task is to develope an AI-based web application capable of detecting emotions from textual input. The application leverages IBM Watson's NLP capabilities and is built using Python and Flask.
-
-The project is divided into 8 main tasks, each contributing to a final score of 16 points. These tasks involve setting up a local development environment, creating and formatting the application, performing tests, deploying the app, and adhering to good software engineering practices.
+A Flask web application that analyzes text and predicts emotional tone using an
+IBM Watson NLP emotion classification endpoint. The app returns confidence
+scores for anger, disgust, fear, joy, and sadness, then highlights the dominant
+emotion in a clean browser interface.
 
 ## Features
 
-- Accepts textual input and analyzes the emotional tone.
-- Uses IBM Watson NLP library for emotion detection.
-- Flask-powered web UI.
-- Unit tests to ensure functionality.
-- Static code analysis with pylint or flake8.
-- Error handling and user-friendly messages.
-- Easily deployable web app.
+- Text emotion analysis through a Flask JSON endpoint
+- Emotion score visualization in the browser
+- Graceful handling for blank input, API errors, malformed responses, and
+  network failures
+- Deterministic unit tests with mocked API responses
+- Ruff linting and GitHub Actions CI
 
-## Technologies Used
+## Tech Stack
 
-- Python 3.8+
+- Python
 - Flask
-- IBM Watson NLP
-- HTML/CSS (for frontend)
-- Pytest or Unittest (for unit testing)
-- pylint or flake8 (for code analysis)
+- Requests
+- Pytest
+- Ruff
+- HTML, CSS, and JavaScript
 
 ## Project Structure
 
-```
-emotion-detector/
-│
+```text
+AI-Emotion-Detector-Webapp/
+├── .github/workflows/ci.yml
+├── EmotionDetection/
+│   ├── __init__.py
+│   └── emotion_detection.py
 ├── static/
+│   ├── favicon.svg
+│   ├── mywebscript.js
 │   └── styles.css
 ├── templates/
 │   └── index.html
+├── tests/
+│   ├── test_emotion_detection.py
+│   └── test_server.py
 ├── server.py
-├── emotion_detector.py
-├── test_emotion_detector.py
-├── .pylintrc or .flake8
+├── requirements.txt
+├── pyproject.toml
 └── README.md
 ```
 
-## Setup Instructions
+## Getting Started
 
-1. **Clone the Repository**
-
-```bash
-git clone https://github.com/yourusername/emotion-detector.git
-cd emotion-detector
-```
-
-2. **Create and Activate Virtual Environment**
+Create and activate a virtual environment:
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-3. **Install Dependencies**
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Tasks Overview
-
-### Task 1: Clone the Repository
-
-You should clone this GitHub repository using the instructions above.
-
-### Task 2: Create Emotion Detection App
-
-Use IBM Watson NLP SDK to detect emotions from input text. The core functionality resides in `emotion_detector.py`.
-
-### Task 3: Format Output
-
-Ensure the application returns emotion data in a clean, formatted way (e.g., dictionary or JSON with emotion scores).
-
-### Task 4: Package Application
-
-All files should be organized and dependencies listed in `requirements.txt`.
-
-### Task 5: Run Unit Tests
-
-Use `unittest` or `pytest` to write tests for core functionality in `test_emotion_detector.py`.
-
-### Task 6: Web Deployment Using Flask
-
-Create a web interface using Flask (`app.py`) that allows users to input text and view emotion analysis results.
-
-### Task 7: Incorporate Error Handling
-
-Handle common errors like empty inputs, network/API issues, or invalid responses gracefully with error messages.
-
-### Task 8: Static Code Analysis
-
-Run a tool like `pylint` or `flake8` and aim for clean, well-documented, and readable code.
-
-## Running the Application
+Run the application:
 
 ```bash
-flask run
+python3 server.py
 ```
 
-Visit `http://localhost:5000` to access the web interface.
-
+Open `http://localhost:5000` in your browser.
 
 ## Testing
 
-Run the test suite using:
+Run the test suite:
 
 ```bash
 pytest
 ```
 
-or
+Run linting:
 
 ```bash
-python -m unittest discover
+ruff check .
 ```
 
+## API Response
 
-## Code Analysis
+The `/emotionDetector` route accepts a `textToAnalyze` query parameter and
+returns JSON.
 
-To perform static code analysis:
+Successful response:
 
-```bash
-pylint app.py emotion_detector.py
+```json
+{
+  "result": {
+    "anger": 0.02,
+    "disgust": 0.01,
+    "fear": 0.04,
+    "joy": 0.9,
+    "sadness": 0.03,
+    "dominant_emotion": "joy"
+  }
+}
 ```
 
-or
+Validation or service failure response:
 
-```bash
-flake8 .
+```json
+{
+  "error": "Enter a sentence with enough context to analyze.",
+  "result": {
+    "anger": 0.0,
+    "disgust": 0.0,
+    "fear": 0.0,
+    "joy": 0.0,
+    "sadness": 0.0,
+    "dominant_emotion": "None"
+  }
+}
 ```
 
+## Notes
 
-## Error Handling
-
-The application includes robust error handling for:
-
-- Empty or invalid user input
-- API call failures
-- Unexpected server errors
-
-
-## Deployment
-
-This project can be deployed on any platform that supports Flask, such as:
-
-- Render
-- Heroku
-- AWS Elastic Beanstalk
-- Google App Engine
-
-Follow provider-specific instructions for deployment.
-
-
-## Acknowledgments
-
-- IBM Watson NLP API documentation
-- Flask documentation
+This project uses a public IBM Skills Network Watson NLP demo endpoint. The app
+handles service failures gracefully, but production deployments should use a
+managed NLP service account, stronger observability, and rate limiting.
 
 ## License
-This project is provided as part of an academic course and is intended for educational purposes.
 
+This project is licensed under the Apache License 2.0.
